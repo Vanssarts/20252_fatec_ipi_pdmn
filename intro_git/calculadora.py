@@ -1,2 +1,2 @@
-def somar(a,b);
+def somar(a,b):
     return a + b
