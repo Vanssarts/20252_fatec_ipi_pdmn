@@ -1,17 +1,42 @@
 import React from "react";
 import Gato from "./Gato";
+import { EstacaoClimatica } from "./EstacaoClimatica";
+import Loading from "./Loading";
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      latitude: null,
-      longitude: null,
-      estacao: null,
-      data: null,
-      icone: null,
-      mensagemDeErro: null
-    };
+    //this.state = {
+    //  latitude: null,
+    //  longitude: null,
+    //  estacao: null,
+    //  data: null,
+    //  icone: null,
+    //  mensagemDeErro: null
+    // };
+    console.log("construtor");
+  }
+
+  state = {
+    latitude: null,
+    longitude: null,
+    estacao: null,
+    data: null,
+    icone: null,
+    mensagemDeErro: null
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+    //this.obterLocalizacao();
+  }
+  
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
   }
 
   icone = {
@@ -67,6 +92,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("render");
     return (
       <div className="container mt-2">
         <div className="row">
@@ -76,26 +102,26 @@ class App extends React.Component {
           </div>
         </div>
         {}
-        <div className="card">
-          <div className="card-body">
-          {}
-            <div className="d-flex align-items-center border rounded mb-2" style={{height: "6rem"}}>
-              <i className={`fa-solid fa-4x fa-${this.state.icone}`}></i>
-              <p className="w-75 text-center ms-3 fs-1">{this.state.estacao}</p>
-            </div>
-            <div>
-              <p className="text-center">
-              {
-                this.state.latitude ?
-                `Coordenadas: ${this.state.latitude}, ${this.state.longitude} - Data: ${this.state.data}` :
-                this.state.mensagemDeErro ? this.state.mensagemDeErro :
-                `Clique no botão para obter sua estação climática.`
-              }
-              </p>
-            </div>
-            <button onClick={this.obterLocalizacao} className="btn btn-outline-primary w-100 mt-2">
-              Qual é a minha estação?
-            </button>
+        <div className="row">
+          <div className="col-12">
+            {
+              (!this.state.latitude && !this.state.mensagemDeErro) ?
+               <Loading />
+              :
+              this.state.mensagemDeErro ?
+              <p className="border rounded p-2 fs-1 text-center">
+                É preciso dar permissão para obter a localização. 
+                Atualize a página e tente de novo, ajustando
+                a configuração do seu navegador.
+              </p> :
+            <EstacaoClimatica 
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              estacao={this.state.estacao}
+              icone={this.state.icone}
+              obterLocalizacao={this.obterLocalizacao}
+            />
+            }
           </div>
         </div>
       </div>
