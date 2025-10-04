@@ -1,0 +1,70 @@
+import { useState } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import Bolinhas from "./Bolinhas.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+function Megasena() {
+  const [numeros, setNumeros] = useState([]); --> Cria uma variável de estado chamada "numeros"
+                                                    e uma função "setNumeros" para atualizá-la.
+                                                    Inicialmente é um array vazio ([]).
+                                                    Esse array vai guardar os 6 números sorteados.
+
+  const gerarNumeros = () => { --> Declara a função "gerarNumeros", que será chamada
+                                    quando o usuário clicar no botão "Gerar jogo".
+                                    Responsável por gerar os números aleatórios.
+
+    const sorteados = []; --> Cria um array temporário chamado "sorteados" para
+                                armazenar os números aleatórios únicos.
+
+    while (sorteados.length < 6) { --> Loop que continua até termos 6 números.
+      const n = Math.floor(Math.random() * 60) + 1; --> Gera números aleatórios entre 1 e 60.
+                                                        Math.floor arredonda para baixo,
+                                                        garantindo número inteiro.
+                                                        Math.random gera números aleatórios entre 0 e 1.
+                                                        + 1 é porque se não iria de 0 até 59.
+      if (!sorteados.includes(n)) { --> Evita números repetidos.
+        sorteados.push(n); --> Adiciona o número único ao array.
+      }
+    }
+
+    sorteados.sort((a,b) => a-b); --> Ordena os números em ordem crescente usando .sort().
+                                        (a,b) => a-b garante que o sort funcione numericamente
+                                        e não como texto.
+    setNumeros(sorteados); --> Atualiza a variável de estado "numeros" com os 6 números sorteados.
+                                Isso faz o React renderizar novamente o componente e mostrar
+                                as bolinhas na tela.
+  };
+
+  return (
+    <Container className="text-center mt-4"> --> Container com texto centralizado e margem superior.
+      <Row className="mb-3"> --> Cria uma linha (Row) com margem inferior.
+        <Col><h2>Mega Sena</h2></Col> --> Cria uma coluna (Col) contendo o título “Mega Sena”.
+      </Row>
+
+      {numeros.length > 0 && ( --> Condicional: só mostra os números se
+                                    o array "numeros" tiver algum valor.
+        <Row className="mb-3 justify-content-center"> --> Linha centralizada com margem inferior.
+          {numeros.map((num) => ( --> Percorre cada número do array e cria uma coluna para ele.
+            <Col xs="auto"> --> A coluna ocupa apenas o espaço necessário para o conteúdo.
+              <div style={Bolinhas}>{num}</div> --> Mostra o número dentro da bolinha estilizada
+                                                    usando o estilo importado de "Bolinhas".
+            </Col>
+          ))}
+        </Row>
+      )}
+
+      <Row>
+        <Col className="d-flex justify-content-center"> --> Centraliza o botão horizontalmente.
+          <Button onClick={gerarNumeros}> --> Chama a função "gerarNumeros" quando clicado.
+            Gerar jogo
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+  )
+}
+
+export default Megasena;
