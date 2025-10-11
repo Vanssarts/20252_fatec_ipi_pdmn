@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+// rce
+import React from 'react'
 
 export class EstacaoClimatica extends React.Component {
 
